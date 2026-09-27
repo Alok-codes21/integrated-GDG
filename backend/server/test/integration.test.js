@@ -27,7 +27,7 @@ test('full stack integration: auth, schemes, ai extract, ocr scan, documents, ap
     const [hStatus, health] = await call('/api/health');
     assert.equal(hStatus, 200);
     assert.equal(health.ok, true);
-    assert.equal(health.ocr, 'enabled-ml-parser');
+    assert.equal(health.ocr, 'text-pattern-only-no-file-ocr');
 
     // 2. Mobile Citizen Registration & Login
     const [regStatus, regData] = await call('/api/auth/register', 'POST', {
@@ -63,8 +63,8 @@ test('full stack integration: auth, schemes, ai extract, ocr scan, documents, ap
     assert.equal(aiData.profile.state, 'Maharashtra');
     assert.equal(aiData.profile.district, 'Nashik');
     assert.equal(aiData.profile.occupation, 'farmer');
-    assert.equal(aiData.profile.ownsCultivableLand, true);
-    assert.equal(aiData.profile.bpl, true);
+    assert.equal(aiData.profile.ownsCultivableLand, undefined);
+    assert.equal(aiData.profile.bpl, undefined);
     assert.equal(aiData.profile.annualFamilyIncome, 180000);
     assert.ok(aiData.confidence >= 80);
 
@@ -85,46 +85,36 @@ test('full stack integration: auth, schemes, ai extract, ocr scan, documents, ap
     }, citizenToken);
     assert.equal(ocrStatus, 200);
     assert.equal(ocrData.success, true);
-    assert.equal(ocrData.documentType, 'Income Certificate');
+    assert.equal(ocrData.documentType, 'Unknown - review original');
     assert.equal(ocrData.extractedData.annualIncome, 180000);
-    assert.ok(ocrData.confidence > 90);
+    assert.equal(ocrData.verified, false);
+    assert.equal(ocrData.confidence, null);
 
-    // 7. Document Vault Management
+    // 7. The API must not show fabricated documents or approved applications.
     const [vaultStatus, vaultDocs] = await call('/api/documents', 'GET', undefined, citizenToken);
     assert.equal(vaultStatus, 200);
-    assert.ok(Array.isArray(vaultDocs));
-    assert.ok(vaultDocs.length >= 3);
-
-    const [verifyStatus, verifyData] = await call('/api/documents/doc-income/verify', 'POST', {
-      extractedData: ocrData.extractedData
-    }, citizenToken);
-    assert.equal(verifyStatus, 200);
-    assert.equal(verifyData.success, true);
-
-    // 8. Application Tracking
+    assert.deepEqual(vaultDocs, []);
+    const [verifyStatus] = await call('/api/documents/doc-income/verify', 'POST', {extractedData:ocrData.extractedData}, citizenToken);
+    assert.equal(verifyStatus, 501);
     const [appsStatus, apps] = await call('/api/applications', 'GET', undefined, citizenToken);
     assert.equal(appsStatus, 200);
-    assert.ok(Array.isArray(apps));
-
-    const [newAppStatus, newApp] = await call('/api/applications', 'POST', {
-      schemeName: 'PM-KISAN Samman Nidhi',
-      benefit: '₹6,000 / year'
-    }, citizenToken);
-    assert.equal(newAppStatus, 201);
-    assert.equal(newApp.application.schemeName, 'PM-KISAN Samman Nidhi');
-
-    // 9. Life Events and Eligibility Recheck
-    const [lifeStatus, lifeEvents] = await call('/api/life-events', 'GET', undefined, citizenToken);
-    assert.equal(lifeStatus, 200);
-    assert.ok(Array.isArray(lifeEvents));
-
-    const [recheckStatus, recheckData] = await call('/api/life-events/recheck', 'POST', {
-      event: 'Drought Notification in Sinnar',
-      income: 120000
-    }, citizenToken);
-    assert.equal(recheckStatus, 200);
-    assert.equal(recheckData.success, true);
-    assert.ok(recheckData.unlockedSchemesCount >= 2);
+    assert.deepEqual(apps, []);
+    const [newAppStatus] = await call('/api/applications', 'POST', {schemeName:'PM-KISAN Samman Nidhi'}, citizenToken);
+    assert.equal(newAppStatus, 501);
+    const [savedStatus, savedData] = await call('/api/saved-schemes','PUT',{ids:['pm-kisan']},citizenToken);
+    assert.equal(savedStatus,200);
+    assert.deepEqual(savedData.ids,['pm-kisan']);
+    const [savedReadStatus, savedRead] = await call('/api/saved-schemes','GET',undefined,citizenToken);
+    assert.equal(savedReadStatus,200);
+    assert.deepEqual(savedRead.ids,['pm-kisan']);
+    const [invalidSavedStatus] = await call('/api/saved-schemes','PUT',{ids:['not-curated']},citizenToken);
+    assert.equal(invalidSavedStatus,400);
+    const [lifeStatus, lifeEvents] = await call('/api/life-events','GET',undefined,citizenToken);
+    assert.equal(lifeStatus,200);
+    assert.deepEqual(lifeEvents,[]);
+    const [recheckStatus, recheckData] = await call('/api/life-events/recheck','POST',{profile:{age:65}},citizenToken);
+    assert.equal(recheckStatus,200);
+    assert.equal(recheckData.results.length,4);
 
     // 10. Citizen Profile Get and Update
     const [profileGetStatus, profileData] = await call('/api/profile', 'GET', undefined, citizenToken);
