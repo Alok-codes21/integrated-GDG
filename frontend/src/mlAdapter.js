@@ -30,6 +30,7 @@ export async function extractProfile({ text, language = 'en', token = '' }) {
       body: JSON.stringify({ text: text.trim(), language })
     });
 
+    if (res.status === 401 || res.status === 403) throw new Error('Sign in to use the conversation.');
     if (res.ok) {
       const data = await res.json();
       return {
@@ -44,6 +45,7 @@ export async function extractProfile({ text, language = 'en', token = '' }) {
       };
     }
   } catch (err) {
+    if (err.message === 'Sign in to use the conversation.') throw err;
     console.warn('[mlAdapter] Remote AI extraction unreachable, using client-side fallback:', err);
   }
 
