@@ -7,7 +7,7 @@ const names=allSchemes.map(s=>({s,terms:s.name.toLowerCase().includes('kisan')?[
 const fallback=(text,language)=>{const t=text.toLowerCase();const hit=names.find(({terms})=>terms.some(term=>t.includes(term)));const hi=language==='hi';return {reply:hit?(hi?`${hit.s.name}: ${hit.s.summary} यह केवल उदाहरण है, आधिकारिक पात्रता नहीं। नियम यहाँ जाँचें: ${hit.s.officialSource}`:`${hit.s.name}: ${hit.s.summary} This is only an example, not official eligibility. Check the current rules here: ${hit.s.officialSource}`):(hi?'अभी AI जवाब उपलब्ध नहीं है। यह गाइड सात उदाहरण योजनाओं तक सीमित है। कृपया PM-KISAN, वृद्धावस्था, विधवा, दिव्यांगता पेंशन, PMJJBY, PMSBY या APY के बारे में पूछें और आधिकारिक स्रोत पर नियम जाँचें।':'The AI reply is unavailable right now. This guide covers seven examples: PM-KISAN, old-age, widow and disability pensions. Please ask about one of those, PMJJBY, PMSBY or APY, and check its official source.'),mode:'curated-fallback',model:null,scope:'seven-example-scheme-guide'};};
 export async function answerSchemeQuestion(text,{language='en',history=[]}={}){
  if(typeof text!=='string'||!text.trim()||text.length>1000)throw new Error('text must be 1-1000 characters');
- if(!Array.isArray(history)||history.length>8||history.some(t=>!t||!['citizen','assistant'].includes(t.role)||typeof t.text!=='string'||t.text.length>500))throw new Error('Invalid conversation history');
+ if(!Array.isArray(history)||history.length>8||history.some(t=>!t||!['citizen','assistant'].includes(t.role)||typeof t.text!=='string'||t.text.length>1000))throw new Error('Invalid conversation history');
  const key=process.env.GEMINI_API_KEY;if(!key)return fallback(text,language);
  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
  try{
@@ -18,4 +18,4 @@ export async function answerSchemeQuestion(text,{language='en',history=[]}={}){
   if(!reply||reply.length>750)return fallback(text,language);
   return {reply,mode:'gemini',model:MODEL,scope:'seven-example-scheme-guide'};
  }catch(e){console.warn('Scheme assistant request failed:',e.name);return fallback(text,language)}finally{clearTimeout(timer)}
-  }
+}
