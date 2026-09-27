@@ -49,43 +49,7 @@ export async function createLifeEvent(data) {
   }
 }
 
-export async function recheckEligibility(eventData) {
-  try {
-    const response = await api.post("/life-events/recheck", eventData);
-    return response.data;
-  } catch {
-    // Return structured re-assessment result for prototype
-    return {
-      success: true,
-      evaluatedAt: new Date().toISOString(),
-      unlockedSchemesCount: 3,
-      newSchemes: [
-        {
-          id: "sanjay-gandhi-niradhar",
-          name: "Sanjay Gandhi Niradhar Anudan Yojana",
-          benefit: "₹1,500 / month",
-          why: "Income adjusted under statutory limit (< ₹1,40,000/year)"
-        },
-        {
-          id: "antyodaya-anna-yojana",
-          name: "Antyodaya Anna Yojana (AAY) & Priority Household",
-          benefit: "35 kg / month foodgrain",
-          why: "Priority rural cultivator criteria met"
-        },
-        {
-          id: "drought-crop-loss",
-          name: "Maharashtra Drought & Crop Loss Relief Subsidy",
-          benefit: "Up to ₹13,600 / Ha",
-          why: "Nashik rainfed agricultural deficit declared"
-        }
-      ],
-      unaffectedApplications: [
-        { name: "PM-KISAN Samman Nidhi", status: "Active" },
-        { name: "Shravanbal Seva State Pension", status: "Application in progress" }
-      ]
-    };
-  }
-}
+export async function recheckEligibility(eventData){const response=await api.post('/life-events/recheck',eventData);return response.data;}
 
 export default {
   getLifeEvents,
