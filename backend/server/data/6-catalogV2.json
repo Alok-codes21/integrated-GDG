@@ -1,0 +1,901 @@
+[
+  {
+    "id": "pm-kisan",
+    "name": "PM-KISAN (Pradhan Mantri Kisan Samman Nidhi)",
+    "category": "Agriculture",
+    "benefit": "₹6,000 per year in three installments",
+    "officialSource": "https://pmkisan.gov.in/homenew.aspx",
+    "summary": "Income support for qualifying landholding farmer families, subject to exclusions and government verification.",
+    "rules": [
+      {
+        "field": "ownsCultivableLand",
+        "op": "equals",
+        "value": true,
+        "label": "Family owns cultivable land",
+        "source": "https://pmkisan.gov.in/homenew.aspx"
+      },
+      {
+        "field": "pmKisanExclusion",
+        "op": "equals",
+        "value": false,
+        "label": "No PM-KISAN exclusion applies to the family",
+        "source": "https://pmkisan.gov.in/homenew.aspx"
+      }
+    ],
+    "limitations": [
+      "Self-reported land and exclusions cannot establish official eligibility. Government land records, family definition, date of land acquisition, state exceptions and registration must be checked with the official portal."
+    ],
+    "documentChecklist": [],
+    "categories": [
+      "Agriculture"
+    ]
+  },
+  {
+    "id": "ignoaps",
+    "name": "Indira Gandhi National Old Age Pension Scheme (IGNOAPS)",
+    "category": "Senior citizens",
+    "benefit": "Central contribution: ₹200 monthly ages 60–79, ₹500 monthly from age 80; state top-ups vary",
+    "officialSource": "https://nsap.nic.in/circular.do?method=faq",
+    "summary": "NSAP old-age pension for a person aged 60 or over in a BPL household.",
+    "rules": [
+      {
+        "field": "age",
+        "op": "min",
+        "value": 60,
+        "label": "Age at least 60",
+        "source": "https://nsap.nic.in/circular.do?method=faq"
+      },
+      {
+        "field": "bpl",
+        "op": "equals",
+        "value": true,
+        "label": "Household is BPL under the official list/criteria",
+        "source": "https://nsap.nic.in/circular.do?method=faq"
+      }
+    ],
+    "limitations": [
+      "Income amount by itself does not prove BPL status. Government/local authority must verify BPL record and application."
+    ],
+    "documentChecklist": [],
+    "categories": [
+      "Senior citizens",
+      "Pension"
+    ]
+  },
+  {
+    "id": "ignwps",
+    "name": "Indira Gandhi National Widow Pension Scheme (IGNWPS)",
+    "category": "Women",
+    "benefit": "Central contribution: ₹300 monthly (state additions may vary)",
+    "officialSource": "https://nsap.nic.in/",
+    "summary": "NSAP pension for BPL widows aged 40–59.",
+    "rules": [
+      {
+        "field": "age",
+        "op": "min",
+        "value": 40,
+        "label": "Age at least 40",
+        "source": "https://nsap.nic.in/"
+      },
+      {
+        "field": "age",
+        "op": "max",
+        "value": 59,
+        "label": "Age at most 59",
+        "source": "https://nsap.nic.in/"
+      },
+      {
+        "field": "bpl",
+        "op": "equals",
+        "value": true,
+        "label": "Household is BPL under official criteria",
+        "source": "https://nsap.nic.in/"
+      },
+      {
+        "field": "widow",
+        "op": "equals",
+        "value": true,
+        "label": "Applicant is a widow",
+        "source": "https://nsap.nic.in/"
+      }
+    ],
+    "limitations": [
+      "Government/local authority must verify widow and BPL status; this tool cannot determine official entitlement."
+    ],
+    "documentChecklist": [],
+    "categories": [
+      "Women",
+      "Pension"
+    ]
+  },
+  {
+    "id": "igndps",
+    "name": "Indira Gandhi National Disability Pension Scheme (IGNDPS)",
+    "category": "Disability",
+    "benefit": "Central contribution: ₹300 monthly (state additions may vary)",
+    "officialSource": "https://nsap.nic.in/",
+    "summary": "NSAP pension for BPL people aged 18–59 with severe or multiple disabilities.",
+    "rules": [
+      {
+        "field": "age",
+        "op": "min",
+        "value": 18,
+        "label": "Age at least 18",
+        "source": "https://nsap.nic.in/"
+      },
+      {
+        "field": "age",
+        "op": "max",
+        "value": 59,
+        "label": "Age at most 59",
+        "source": "https://nsap.nic.in/"
+      },
+      {
+        "field": "bpl",
+        "op": "equals",
+        "value": true,
+        "label": "Household is BPL under official criteria",
+        "source": "https://nsap.nic.in/"
+      },
+      {
+        "field": "severeOrMultipleDisability",
+        "op": "equals",
+        "value": true,
+        "label": "Severe or multiple disability",
+        "source": "https://nsap.nic.in/"
+      }
+    ],
+    "limitations": [
+      "Government/local authority must verify disability classification and BPL status; this tool cannot determine official entitlement."
+    ],
+    "documentChecklist": [],
+    "categories": [
+      "Disability",
+      "Pension"
+    ]
+  },
+  {
+    "id": "pmjjby",
+    "name": "Pradhan Mantri Jeevan Jyoti Bima Yojana (PMJJBY)",
+    "category": "Insurance",
+    "benefit": "₹2 lakh life cover on death from any cause; annual premium applies",
+    "officialSource": "https://financialservices.gov.in/pmjjby",
+    "summary": "Renewable one-year life insurance for participating bank or post-office account holders enrolling at ages 18–50.",
+    "rules": [
+      {
+        "field": "age",
+        "op": "min",
+        "value": 18,
+        "label": "Age at least 18 at enrolment",
+        "source": "https://financialservices.gov.in/pmjjby"
+      },
+      {
+        "field": "age",
+        "op": "max",
+        "value": 50,
+        "label": "Age at most 50 at enrolment",
+        "source": "https://financialservices.gov.in/pmjjby"
+      }
+    ],
+    "limitations": [
+      "This age comparison alone cannot establish eligibility or coverage. A participating bank/post-office account, consent to auto-debit, premium, enrolment period, exclusions and current terms need verification. The official page listed an annual premium of ₹436 when checked in September 2026; verify before joining."
+    ],
+    "documentChecklist": [],
+    "categories": [
+      "Insurance"
+    ]
+  },
+  {
+    "id": "pmsby",
+    "name": "Pradhan Mantri Suraksha Bima Yojana (PMSBY)",
+    "category": "Insurance",
+    "benefit": "Accident cover up to ₹2 lakh for death or specified permanent disability; annual premium applies",
+    "officialSource": "https://financialservices.gov.in/pmsby",
+    "summary": "Renewable one-year accident insurance for participating bank or post-office account holders aged 18–70.",
+    "rules": [
+      {
+        "field": "age",
+        "op": "min",
+        "value": 18,
+        "label": "Age at least 18",
+        "source": "https://financialservices.gov.in/pmsby"
+      },
+      {
+        "field": "age",
+        "op": "max",
+        "value": 70,
+        "label": "Age at most 70 for enrolment",
+        "source": "https://financialservices.gov.in/pmsby"
+      }
+    ],
+    "limitations": [
+      "Age alone cannot establish enrolment or coverage. A participating bank/post-office account, consent to auto-debit, sufficient balance, accident definition and current terms must be verified. The official page listed a ₹20 annual premium when checked in September 2026; verify before joining."
+    ],
+    "documentChecklist": [],
+    "categories": [
+      "Insurance"
+    ]
+  },
+  {
+    "id": "apy",
+    "name": "Atal Pension Yojana (APY)",
+    "category": "Pension",
+    "benefit": "Contribution-based guaranteed monthly pension of ₹1,000–₹5,000 from age 60, depending on contribution",
+    "officialSource": "https://jansuraksha.gov.in/Files/APY/ENGLISH/APY.pdf",
+    "summary": "Contributory pension option for citizens enrolling at ages 18–40 with a savings account; income-tax payer exclusion applies to new enrolment.",
+    "rules": [
+      {
+        "field": "age",
+        "op": "min",
+        "value": 18,
+        "label": "Age at least 18 when joining",
+        "source": "https://jansuraksha.gov.in/Files/APY/ENGLISH/APY.pdf"
+      },
+      {
+        "field": "age",
+        "op": "max",
+        "value": 40,
+        "label": "Age at most 40 when joining",
+        "source": "https://jansuraksha.gov.in/Files/APY/ENGLISH/APY.pdf"
+      }
+    ],
+    "limitations": [
+      "Age alone cannot establish eligibility. Savings account, nationality, contribution choice and tax-payer exclusion for joiners since October 2022 must be verified with the official source. This is not a welfare payout without contributions."
+    ],
+    "documentChecklist": [],
+    "categories": [
+      "Pension",
+      "Workers"
+    ]
+  },
+  {
+    "id": "pmkmy",
+    "name": "Pradhan Mantri Kisan Maan-Dhan Yojana (PM-KMY)",
+    "category": "Agriculture",
+    "categories": [
+      "Agriculture"
+    ],
+    "benefit": "Contributory pension of ₹3,000 monthly after age 60",
+    "officialSource": "https://pmkisan.gov.in/Documents/PM-KMY%20-%20Operational%20Guidelines.pdf",
+    "summary": "A voluntary pension for eligible small and marginal landholding farmers who join at ages 18–40. Contributions and exclusions apply.",
+    "rules": [
+      {
+        "field": "age",
+        "op": "min",
+        "value": 18,
+        "label": "Age at least 18",
+        "source": "https://pmkisan.gov.in/Documents/PM-KMY%20-%20Operational%20Guidelines.pdf"
+      },
+      {
+        "field": "age",
+        "op": "max",
+        "value": 40,
+        "label": "Age at most 40",
+        "source": "https://pmkisan.gov.in/Documents/PM-KMY%20-%20Operational%20Guidelines.pdf"
+      }
+    ],
+    "limitations": [
+      "Owning land alone does not prove small/marginal farmer status. Monthly contributions, land records and exclusions need official checks."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "pmfby",
+    "name": "Pradhan Mantri Fasal Bima Yojana (PMFBY)",
+    "category": "Agriculture",
+    "categories": [
+      "Agriculture",
+      "Insurance"
+    ],
+    "benefit": "Crop insurance; cover, premium and claim depend on notified crop and area",
+    "officialSource": "https://pmfby.gov.in/faq",
+    "summary": "Crop insurance for farmers, including sharecroppers or tenants, growing notified crops in notified areas.",
+    "rules": [],
+    "limitations": [
+      "A crop, location and season must be notified. This guide cannot verify enrolment, premium or claim."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "pmkusum",
+    "name": "PM-KUSUM",
+    "category": "Agriculture",
+    "categories": [
+      "Agriculture"
+    ],
+    "benefit": "Solar pumps and farm-energy support; component terms vary",
+    "officialSource": "https://pmkusum.mnre.gov.in/",
+    "summary": "Farm energy programme with solar pump and decentralised power components. Which components are open varies by state and tender.",
+    "rules": [],
+    "limitations": [
+      "Not every applicant can join every component; check the state implementing agency and current notices."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "kcc",
+    "name": "Kisan Credit Card (KCC)",
+    "category": "Agriculture",
+    "categories": [
+      "Agriculture"
+    ],
+    "benefit": "Bank credit for farming needs; a loan, not a grant",
+    "officialSource": "https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=62981",
+    "summary": "A bank credit facility for qualifying agricultural and allied activities.",
+    "rules": [],
+    "limitations": [
+      "A repayable bank credit facility, not a grant. RBI revised directions issued 19 June 2026 take effect only for loans sanctioned from 1 January 2027. For a current application, ask the bank for its presently applicable KCC terms and eligibility."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "disha",
+    "name": "Disha early-intervention centres",
+    "category": "Disability",
+    "categories": [
+      "Disability"
+    ],
+    "benefit": "Early intervention and day-care services, not cash to the family",
+    "officialSource": "https://nationaltrust.nic.in/disha-scheme/",
+    "summary": "National Trust centres for children aged 0–10 with disabilities covered by the National Trust Act.",
+    "rules": [
+      {
+        "field": "age",
+        "op": "max",
+        "value": 10,
+        "label": "Age at most 10",
+        "source": "https://nationaltrust.nic.in/disha-scheme/"
+      }
+    ],
+    "limitations": [
+      "Centre access, disability classification and enrollment must be checked with a registered provider."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "vikaas",
+    "name": "Vikaas day-care and skills centres",
+    "category": "Disability",
+    "categories": [
+      "Disability"
+    ],
+    "benefit": "Day-care and vocational services, not a direct grant",
+    "officialSource": "https://nationaltrust.nic.in/vikaas-scheme/",
+    "summary": "National Trust centre services for persons aged 10 or older with disabilities covered by the National Trust Act.",
+    "rules": [
+      {
+        "field": "age",
+        "op": "min",
+        "value": 10,
+        "label": "Age at least 10",
+        "source": "https://nationaltrust.nic.in/vikaas-scheme/"
+      }
+    ],
+    "limitations": [
+      "Availability depends on a registered centre; assessment and simultaneous-enrolment restrictions apply."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "niramaya",
+    "name": "Niramaya disability health insurance",
+    "category": "Disability",
+    "categories": [
+      "Disability",
+      "Insurance"
+    ],
+    "benefit": "Health insurance cover up to ₹1 lakh, subject to terms",
+    "officialSource": "https://nationaltrust.nic.in/niramaya/",
+    "summary": "Health insurance for persons with disabilities covered by the National Trust Act and valid disability documentation.",
+    "rules": [],
+    "limitations": [
+      "Specific disability category, certificate/UDID status, premium and insurer terms must be checked."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "adip",
+    "name": "ADIP aids and assistive devices",
+    "category": "Disability",
+    "categories": [
+      "Disability"
+    ],
+    "benefit": "Assistive devices through approved implementing agencies",
+    "officialSource": "https://depwd.gov.in/en/adip-scheme/",
+    "summary": "Aid for eligible persons with disabilities to obtain assistive devices.",
+    "rules": [],
+    "limitations": [
+      "Disability, income, device need and local implementation require checks; not a general cash grant."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "livestock-insurance",
+    "name": "Livestock Insurance under National Livestock Mission",
+    "category": "Insurance",
+    "categories": [
+      "Insurance"
+    ],
+    "benefit": "Insurance for eligible livestock; premium and cover vary",
+    "officialSource": "https://dahd.gov.in/schemes/programmes/national_livestock_mission",
+    "summary": "Government-backed livestock insurance delivered through the relevant animal-husbandry scheme/platform.",
+    "rules": [],
+    "limitations": [
+      "Species, animal identification, local rollout, insurer and premium must be checked."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "pmsym",
+    "name": "Pradhan Mantri Shram Yogi Maan-dhan (PM-SYM)",
+    "category": "Pension",
+    "categories": [
+      "Pension",
+      "Workers"
+    ],
+    "benefit": "Contributory pension after age 60",
+    "officialSource": "https://www.labour.gov.in/offerings/schemes-and-services/details/pm-sym-QTOzATMtQWa",
+    "summary": "Voluntary old-age pension for eligible unorganised workers who join at ages 18–40.",
+    "rules": [
+      {
+        "field": "age",
+        "op": "min",
+        "value": 18,
+        "label": "Age at least 18",
+        "source": "https://www.labour.gov.in/offerings/schemes-and-services/details/pm-sym-QTOzATMtQWa"
+      },
+      {
+        "field": "age",
+        "op": "max",
+        "value": 40,
+        "label": "Age at most 40",
+        "source": "https://www.labour.gov.in/offerings/schemes-and-services/details/pm-sym-QTOzATMtQWa"
+      }
+    ],
+    "limitations": [
+      "Income, occupation, exclusions and monthly contributions need checks; not an unconditional pension."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "pmjay70",
+    "name": "Ayushman Vay Vandana (PM-JAY age 70+)",
+    "category": "Senior citizens",
+    "categories": [
+      "Senior citizens"
+    ],
+    "benefit": "Up to ₹5 lakh healthcare coverage under PM-JAY rules",
+    "officialSource": "https://nha.gov.in/img/resources/English_FAQs_related_to_the_benefits_for_senior_citizens.pdf",
+    "summary": "PM-JAY health coverage for Indian citizens aged 70 or above regardless of income, with a separate senior card.",
+    "rules": [
+      {
+        "field": "age",
+        "op": "min",
+        "value": 70,
+        "label": "Age at least 70",
+        "source": "https://nha.gov.in/img/resources/English_FAQs_related_to_the_benefits_for_senior_citizens.pdf"
+      }
+    ],
+    "limitations": [
+      "Age and citizenship must be established by the official process. Hospital, card and treatment rules apply; not a cash payout."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "rvy",
+    "name": "Rashtriya Vayoshri Yojana (RVY)",
+    "category": "Senior citizens",
+    "categories": [
+      "Senior citizens"
+    ],
+    "benefit": "Assisted-living devices for eligible age-related infirmities",
+    "officialSource": "https://socialjustice.gov.in/schemes/43",
+    "summary": "A component of Atal Vayo Abhyuday Yojana supporting eligible older people with age-related disability or infirmity.",
+    "rules": [
+      {
+        "field": "age",
+        "op": "min",
+        "value": 60,
+        "label": "Age at least 60",
+        "source": "https://socialjustice.gov.in/schemes/43"
+      }
+    ],
+    "limitations": [
+      "This is a component under AVYAY, not a separate general pension. Income, infirmity and camp availability need official checks."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "scss",
+    "name": "Senior Citizens Savings Scheme (SCSS)",
+    "category": "Senior citizens",
+    "categories": [
+      "Senior citizens"
+    ],
+    "benefit": "Interest on a funded savings account; rates change",
+    "officialSource": "https://www.indiapost.gov.in/banking-services/savings",
+    "summary": "A government-backed savings account for eligible senior citizens, not a welfare grant.",
+    "rules": [],
+    "limitations": [
+      "The usual entry age is 60, with specific exceptions for some retirees. Check age, retirement proof, deposit, rate and withdrawal terms officially; this is not a grant."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "nphce",
+    "name": "National Programme for Health Care of the Elderly (NPHCE)",
+    "category": "Senior citizens",
+    "categories": [
+      "Senior citizens"
+    ],
+    "benefit": "Geriatric health services where facilities participate",
+    "officialSource": "https://dghs.mohfw.gov.in/national-programme-for-the-health-care-of-the-elderly.php",
+    "summary": "Health-care programme providing geriatric services through participating public facilities.",
+    "rules": [
+      {
+        "field": "age",
+        "op": "min",
+        "value": 60,
+        "label": "Age at least 60",
+        "source": "https://dghs.mohfw.gov.in/national-programme-for-the-health-care-of-the-elderly.php"
+      }
+    ],
+    "limitations": [
+      "Local service availability must be checked. This is not direct cash assistance."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "pmmvy",
+    "name": "Pradhan Mantri Matru Vandana Yojana (PMMVY)",
+    "category": "Women",
+    "categories": [
+      "Women"
+    ],
+    "benefit": "Maternity benefit; amount and instalments depend on current rules",
+    "officialSource": "https://www.spniwcd.wcd.gov.in/pradhan-mantri-matru-vandana-yojna/faqs",
+    "summary": "Maternity benefit for qualifying pregnancies, including the current second-child girl-child provision.",
+    "rules": [],
+    "limitations": [
+      "Pregnancy, birth order, employment exclusions and records are not known from a basic profile."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "pmuy",
+    "name": "Pradhan Mantri Ujjwala Yojana (PMUY)",
+    "category": "Women",
+    "categories": [
+      "Women"
+    ],
+    "benefit": "LPG connection support for qualifying poor households",
+    "officialSource": "https://www.pmuy.gov.in/faq.html",
+    "summary": "New LPG connection for an adult woman from a qualifying poor household with no other household LPG connection.",
+    "rules": [
+      {
+        "field": "age",
+        "op": "min",
+        "value": 18,
+        "label": "Age at least 18",
+        "source": "https://www.pmuy.gov.in/faq.html"
+      }
+    ],
+    "limitations": [
+      "Income or BPL answer alone does not establish the required deprivation declaration or absence of an LPG connection."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "sukanya",
+    "name": "Sukanya Samriddhi Account",
+    "category": "Women",
+    "categories": [
+      "Women"
+    ],
+    "benefit": "Interest-bearing savings account for a girl child, not a grant",
+    "officialSource": "https://www.indiapost.gov.in/banking-services/savings",
+    "summary": "Guardian-opened savings account for an eligible girl child under age 10.",
+    "rules": [],
+    "limitations": [
+      "Account is for a girl child, not any adult woman; guardian, age and deposits are not captured in this profile."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "jsy",
+    "name": "Janani Suraksha Yojana (JSY)",
+    "category": "Women",
+    "categories": [
+      "Women",
+      "Health"
+    ],
+    "benefit": "Conditional support for eligible institutional delivery",
+    "officialSource": "https://www.nhm.gov.in/index1.php?lang=1&level=3&lid=309&sublinkid=841",
+    "summary": "A safe-motherhood programme supporting qualifying institutional deliveries under NHM.",
+    "rules": [],
+    "limitations": [
+      "State category, pregnancy, facility and local criteria determine any benefit."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "nmmss",
+    "name": "National Means-cum-Merit Scholarship (NMMSS)",
+    "category": "Students",
+    "categories": [
+      "Students"
+    ],
+    "benefit": "Scholarship for eligible school students",
+    "officialSource": "https://scholarships.gov.in/public/schemeGuidelines/NMMSSGuidelines.pdf",
+    "summary": "Means-cum-merit support subject to class, family income, school type and selection test.",
+    "rules": [],
+    "limitations": [
+      "School, grade, income, test result and application window are not known from this profile."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "csss",
+    "name": "PM-USP Central Sector Scholarship for College and University Students",
+    "category": "Students",
+    "categories": [
+      "Students"
+    ],
+    "benefit": "Higher-education scholarship subject to marks and income",
+    "officialSource": "https://scholarships.gov.in/public/schemeGuidelines/Guidelines_DOHE_CSSS.pdf",
+    "summary": "Scholarship for eligible students entering undergraduate or postgraduate study.",
+    "rules": [],
+    "limitations": [
+      "Board percentile, course, income, other scholarships and application window need checks."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "sc-post-matric",
+    "name": "Post-Matric Scholarship for SC Students",
+    "category": "Students",
+    "categories": [
+      "Students"
+    ],
+    "benefit": "Post-matric educational support under scheme and state rules",
+    "officialSource": "https://socialjustice.gov.in/schemes/25",
+    "summary": "Scholarship for eligible Scheduled Caste students pursuing qualifying post-matric study.",
+    "rules": [],
+    "limitations": [
+      "Caste certificate, course, family income and state administration require verification."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "pragati",
+    "name": "AICTE Pragati Scholarship for Girl Students",
+    "category": "Students",
+    "categories": [
+      "Students"
+    ],
+    "benefit": "Scholarship for eligible technical education",
+    "officialSource": "https://scholarships.gov.in/public/schemeGuidelines/AICTE/AICTE_2011_F.pdf",
+    "summary": "Support for girl students in qualifying AICTE-approved technical degree or diploma courses.",
+    "rules": [],
+    "limitations": [
+      "Course approval, family income, selection and current application window need checks."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "disability-scholarship",
+    "name": "Scholarships for Students with Disabilities",
+    "category": "Students",
+    "categories": [
+      "Students"
+    ],
+    "benefit": "Educational support under the applicable scholarship component",
+    "officialSource": "https://depwd.gov.in/en/umbrella-scholarship-scheme-for-student-with-disabilities-w-e-f-1st-april-2023/",
+    "summary": "DEPwD umbrella scheme with distinct pre-matric, post-matric and higher-education components.",
+    "rules": [],
+    "limitations": [
+      "The correct component depends on education level, disability certificate, income and current application period."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "pmvishwakarma",
+    "name": "PM Vishwakarma",
+    "category": "Workers",
+    "categories": [
+      "Workers"
+    ],
+    "benefit": "Training, toolkit support and concessional credit by stage",
+    "officialSource": "https://pmvishwakarma.gov.in/Home/Gallery",
+    "summary": "Support for eligible self-employed artisans in listed traditional trades.",
+    "rules": [
+      {
+        "field": "age",
+        "op": "min",
+        "value": 18,
+        "label": "Age at least 18",
+        "source": "https://pmvishwakarma.gov.in/Home/Gallery"
+      }
+    ],
+    "limitations": [
+      "The trade, family restriction, existing loans and verification are not captured. Credit is repayable."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "pmsvanidhi",
+    "name": "PM SVANidhi",
+    "category": "Workers",
+    "categories": [
+      "Workers"
+    ],
+    "benefit": "Working-capital loan for eligible street vendors, not a grant",
+    "officialSource": "https://pmsvanidhi.mohua.gov.in/",
+    "summary": "Micro-credit facility for qualifying street vendors with local identification and lending checks.",
+    "rules": [],
+    "limitations": [
+      "Vendor status, local certificate, lender and current loan terms require verification."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "pmjay",
+    "name": "Ayushman Bharat PM-JAY",
+    "category": "Health",
+    "categories": [
+      "Health"
+    ],
+    "benefit": "Hospital treatment cover for eligible beneficiaries under programme rules",
+    "officialSource": "https://nha.gov.in/PM-JAY",
+    "summary": "Cashless hospitalisation programme for identified households, distinct from general health insurance purchase.",
+    "rules": [],
+    "limitations": [
+      "Income or occupation alone cannot establish beneficiary-list inclusion; check the official beneficiary portal."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "jssk",
+    "name": "Janani Shishu Suraksha Karyakram (JSSK)",
+    "category": "Health",
+    "categories": [
+      "Health"
+    ],
+    "benefit": "Free public-facility maternal and child services under programme rules",
+    "officialSource": "https://nhm.gov.in/index4.php?lang=1&level=0&lid=171&linkid=150",
+    "summary": "NHM programme addressing costs of eligible maternal and child care in public health facilities.",
+    "rules": [],
+    "limitations": [
+      "Availability and covered service must be checked locally. This is a service, not cash."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "rbsk",
+    "name": "Rashtriya Bal Swasthya Karyakram (RBSK 2.0)",
+    "category": "Health",
+    "categories": [
+      "Health"
+    ],
+    "benefit": "Child health screening and referral where available",
+    "officialSource": "https://nhm.gov.in/index1.php?lang=1&level=0&lid=773&linkid=499",
+    "summary": "NHM child screening and early-intervention service programme.",
+    "rules": [],
+    "limitations": [
+      "Age, referral, facility and local implementation are not captured; not a cash grant."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "rksk",
+    "name": "Rashtriya Kishor Swasthya Karyakram (RKSK)",
+    "category": "Health",
+    "categories": [
+      "Health"
+    ],
+    "benefit": "Adolescent health counselling and services where available",
+    "officialSource": "https://nhm.gov.in/index4.php?lang=1&level=0&lid=173&linkid=152",
+    "summary": "NHM programme for adolescent health services and outreach.",
+    "rules": [
+      {
+        "field": "age",
+        "op": "min",
+        "value": 10,
+        "label": "Age at least 10",
+        "source": "https://nhm.gov.in/index4.php?lang=1&level=0&lid=173&linkid=152"
+      },
+      {
+        "field": "age",
+        "op": "max",
+        "value": 19,
+        "label": "Age at most 19",
+        "source": "https://nhm.gov.in/index4.php?lang=1&level=0&lid=173&linkid=152"
+      }
+    ],
+    "limitations": [
+      "Local service access must be checked. Not a cash grant."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "pmay-g",
+    "name": "Pradhan Mantri Awaas Yojana-Gramin (PMAY-G)",
+    "category": "Housing",
+    "categories": [
+      "Housing"
+    ],
+    "benefit": "Rural housing assistance under approved beneficiary lists",
+    "officialSource": "https://pmayg.dord.gov.in/netiayHome/about.aspx",
+    "summary": "Rural housing programme prioritising eligible households identified through the official process.",
+    "rules": [],
+    "limitations": [
+      "Income or housing description alone cannot establish beneficiary-list status. Local verification required."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "pmayu-blc",
+    "name": "PMAY-U 2.0: Beneficiary Led Construction (BLC)",
+    "category": "Housing",
+    "categories": [
+      "Housing"
+    ],
+    "benefit": "Urban housing construction assistance under BLC rules",
+    "officialSource": "https://pmaymis.gov.in/PMAYMIS2_2024/PmayBLC.aspx",
+    "summary": "One of four PMAY-U 2.0 verticals for eligible families building their own house.",
+    "rules": [],
+    "limitations": [
+      "Component of one programme, not a separate independent scheme. Urban, ownership and household conditions must be verified."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "pmayu-ahp",
+    "name": "PMAY-U 2.0: Affordable Housing in Partnership (AHP)",
+    "category": "Housing",
+    "categories": [
+      "Housing"
+    ],
+    "benefit": "Eligible urban housing through approved partnership projects",
+    "officialSource": "https://pmaymis.gov.in/PMAYMIS2_2024/PmayAHP.aspx",
+    "summary": "One of four PMAY-U 2.0 verticals for qualifying households and projects.",
+    "rules": [],
+    "limitations": [
+      "Component of one programme, not an independent scheme. Project and beneficiary selection must be checked."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "pmayu-arh",
+    "name": "PMAY-U 2.0: Affordable Rental Housing (ARH)",
+    "category": "Housing",
+    "categories": [
+      "Housing",
+      "Workers"
+    ],
+    "benefit": "Affordable rental housing in available approved projects",
+    "officialSource": "https://pmaymis.gov.in/PMAYMIS2_2024/PmayARH.aspx",
+    "summary": "One of four PMAY-U 2.0 verticals for EWS/LIG urban groups including workers and migrants.",
+    "rules": [],
+    "limitations": [
+      "Component of one programme, not ownership aid or free housing. Rent, units and local availability vary."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "pmayu-iss",
+    "name": "PMAY-U 2.0: Interest Subsidy Scheme (ISS)",
+    "category": "Housing",
+    "categories": [
+      "Housing"
+    ],
+    "benefit": "Home-loan interest subsidy under current limits",
+    "officialSource": "https://pmaymis.gov.in/PMAYMIS2_2024/interest-subsidy-scheme-ISS.html",
+    "summary": "One of four PMAY-U 2.0 verticals for qualifying home-loan borrowers.",
+    "rules": [],
+    "limitations": [
+      "Component of one programme, not a grant for every applicant. Income, loan and property conditions need verification."
+    ],
+    "documentChecklist": []
+  }
+]
