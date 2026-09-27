@@ -40,7 +40,7 @@ export function extractProfile(text) {
  }
 
  // Land ownership extraction
- if(/\b(no\s+land|landless|without\s+land|no\s+cultivable\s+land)\b/.test(t)) {
+ if(/\b(no\s+land|landless|without\s+land|no\s+cultivable\s+land|(?:do not|don't|does not|doesn't)\s+own\s+cultivable\s+land)\b/.test(t)) {
    profile.ownsCultivableLand=false;
    entities.push({field:'ownsCultivableLand',value:false,confidence:0.95});
  } else if(/\b(own\s+(?:cultivable|agricultural)\s+land|owns\s+(?:cultivable|agricultural)\s+land|family\s+owns\s+(?:cultivable|agricultural)\s+land)\b/.test(t) && !/\b(?:do not|don't|does not|doesn't|not|no)\s+(?:own|owns)\b/.test(t)) {
