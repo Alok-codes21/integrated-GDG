@@ -43,7 +43,7 @@ export function extractProfile(text) {
  if(/\b(no\s+land|landless|without\s+land|no\s+cultivable\s+land)\b/.test(t)) {
    profile.ownsCultivableLand=false;
    entities.push({field:'ownsCultivableLand',value:false,confidence:0.95});
- } else if(/\b(cultivable land|own\s+land|owns\s+land|family\s+owns\s+land|\d+(\.\d+)?\s*acres?|\d+\s*bigha|khet|zameen|farming on\s+\d+)\b/.test(t)) {
+ } else if(/\b(own\s+land|owns\s+land|family\s+owns\s+land)\b/.test(t)) {
    profile.ownsCultivableLand=true;
    entities.push({field:'ownsCultivableLand',value:true,confidence:0.92});
  }
@@ -53,7 +53,7 @@ export function extractProfile(text) {
    profile.widow=true;
    entities.push({field:'widow',value:true,confidence:0.96});
  }
- if(/\b(bpl|below poverty line|orange tier|yellow tier|ration card|antyodaya|bpl card)\b/.test(t)) {
+ if(/\b(bpl|below poverty line|bpl card)\b/.test(t)) {
    profile.bpl=true;
    entities.push({field:'bpl',value:true,confidence:0.91});
  }
@@ -85,4 +85,3 @@ export function extractProfile(text) {
    note:'Review extracted fields before saving. BPL and land ownership require citizen review before final verification.'
  };
 }
-
