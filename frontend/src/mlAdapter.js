@@ -70,12 +70,12 @@ export async function extractProfile({ text, language = 'en', token = '' }) {
     evidence.push({ field: 'occupation', value: 'farmer' });
   }
 
-  if (/\b(own\s+land|owns\s+land|family\s+owns\s+land)\b/.test(t) && !/\b(no\s+land|landless)\b/.test(t)) {
+  if (/\b(own\s+(?:cultivable|agricultural)\s+land|owns\s+(?:cultivable|agricultural)\s+land|family\s+owns\s+(?:cultivable|agricultural)\s+land)\b/.test(t) && !/\b(no\s+land|landless|do not own|don't own|does not own|doesn't own)\b/.test(t)) {
     proposed.ownsCultivableLand = true;
     evidence.push({ field: 'ownsCultivableLand', value: true });
   }
 
-  if (/\b(bpl|below poverty line)\b/.test(t)) {
+  if (/\b(bpl|below poverty line)\b/.test(t) && !/\b(?:not|no|without|don't have|do not have|never had|not on)\s+(?:(?:a|the|an|official)\s+)?(?:bpl|below poverty line)/.test(t)) {
     proposed.bpl = true;
     evidence.push({ field: 'bpl', value: true });
   }
