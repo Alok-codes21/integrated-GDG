@@ -138,7 +138,7 @@ app.get('/api/health',(req,res)=>res.json({
   ok:true,
   storage:store()?'mongodb':demoAllowed()?'memory-demo':'unavailable',
   ocr:'text-pattern-only-no-file-ocr',
-  ai:process.env.GEMINI_API_KEY?'gemini-with-pattern-fallback':'pattern-extraction-only',
+  ai:process.env.GROQ_API_KEY?'groq-then-gemini-then-pattern':process.env.GEMINI_API_KEY?'gemini-then-pattern':'pattern-extraction-only',
   schemesAvailable: allSchemes.length
 }));
 
