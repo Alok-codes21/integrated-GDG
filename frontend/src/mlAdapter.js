@@ -34,7 +34,7 @@ export async function extractProfile({ text, language = 'en', token = '' }) {
       const data = await res.json();
       return {
         proposedProfile: data.profile || {},
-        confidence: data.confidence || 88,
+        confidence: data.confidence ?? null,
         evidence: data.extractedEntities || [],
         missingFields: data.missingFields || [],
         note: data.note || 'Review extracted fields before matching.',
@@ -68,12 +68,12 @@ export async function extractProfile({ text, language = 'en', token = '' }) {
     evidence.push({ field: 'occupation', value: 'farmer' });
   }
 
-  if (/\b(cultivable land|own\s+land|owns\s+land|acres?|bigha|khet|zameen)\b/.test(t) && !/\b(no\s+land|landless)\b/.test(t)) {
+  if (/\b(own\s+land|owns\s+land|family\s+owns\s+land)\b/.test(t) && !/\b(no\s+land|landless)\b/.test(t)) {
     proposed.ownsCultivableLand = true;
     evidence.push({ field: 'ownsCultivableLand', value: true });
   }
 
-  if (/\b(bpl|below poverty line|orange tier|yellow tier|ration card)\b/.test(t)) {
+  if (/\b(bpl|below poverty line)\b/.test(t)) {
     proposed.bpl = true;
     evidence.push({ field: 'bpl', value: true });
   }
@@ -89,10 +89,10 @@ export async function extractProfile({ text, language = 'en', token = '' }) {
 
   return {
     proposedProfile: proposed,
-    confidence: 85,
+    confidence: null,
     evidence,
     missingFields: ['age', 'state', 'bpl', 'ownsCultivableLand'].filter(k => proposed[k] === undefined),
-    note: 'Extracted using on-device ML parser. Review values before continuing.',
+    note: 'Pattern-based suggestions from your text. Review every value before continuing.',
     mode: 'client-nlp-fallback'
   };
 }
@@ -100,59 +100,8 @@ export async function extractProfile({ text, language = 'en', token = '' }) {
 /**
  * 2. Intelligent OCR Document Extraction
  */
-export async function extractDocument({ file, consent = true, token = '' }) {
-  const fileName = file?.name || 'Income_Certificate_Sinnar.pdf';
-  const fileType = file?.type || 'application/pdf';
-
-  try {
-    const headers = { 'Content-Type': 'application/json' };
-    if (token) headers['Authorization'] = `Bearer ${token}`;
-
-    const res = await fetch(`${API}/api/documents/scan`, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({
-        fileName,
-        fileType,
-        textContent: `Certificate of Income. Citizen: Rahul Kumar. Tahsildar Sinnar Nashik. Certified income Rs. 180000.`,
-        scan: true,
-        consent
-      })
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      return {
-        proposedFields: data.extractedData || {
-          citizenName: 'Rahul Kumar',
-          annualIncome: 180000,
-          certNumber: 'IC/2026/04981',
-          issueDate: '12 August 2026',
-          authority: 'Office of the Tahsildar, Sinnar, Nashik'
-        },
-        documentType: data.documentType || 'Income Certificate',
-        confidence: data.confidence || 94.6,
-        warnings: [],
-        status: 'extracted'
-      };
-    }
-  } catch (err) {
-    console.warn('[mlAdapter] Remote OCR scan unreachable, using local parser fallback:', err);
-  }
-
-  return {
-    proposedFields: {
-      citizenName: 'Rahul Kumar',
-      annualIncome: 180000,
-      certNumber: 'IC/2026/04981',
-      issueDate: '12 August 2026',
-      authority: 'Office of the Tahsildar, Sinnar, Nashik'
-    },
-    documentType: 'Income Certificate',
-    confidence: 92.4,
-    warnings: ['Simulated OCR Extraction. Confirm values against original hard copy.'],
-    status: 'extracted_local'
-  };
+export async function extractDocument() {
+  throw new Error('File OCR is not available. No document was read or verified.');
 }
 
 /**
