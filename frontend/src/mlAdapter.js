@@ -15,7 +15,7 @@ export const mlCapabilities = Object.freeze({
 /**
  * 1. AI Profile Extraction from conversational free-text
  */
-export async function extractProfile({ text, language = 'en', token = '' }) {
+export async function extractProfile({ text, language = 'en', token = '', history = [] }) {
   if (!text || !text.trim()) {
     throw new Error('Please provide text to extract profile details.');
   }
@@ -27,7 +27,7 @@ export async function extractProfile({ text, language = 'en', token = '' }) {
     const res = await fetch(`${API}/api/ai/converse`, {
       method: 'POST',
       headers,
-      body: JSON.stringify({ text: text.trim(), language })
+      body: JSON.stringify({ text: text.trim(), language, history })
     });
 
     if (res.status === 401 || res.status === 403) throw new Error('Sign in to use the conversation.');
