@@ -166,7 +166,7 @@ app.post('/api/match',requireAuth,(req,res)=>res.json(matchAll(sanitizeProfile(r
 
 // AI Extract
 app.post('/api/ai/extract',requireAuth,(req,res)=>res.json(extractProfile(req.body?.text)));
-app.post('/api/ai/converse',requireAuth,wrap(async(req,res)=>res.json(await converse(req.body?.text,{language:req.body?.language}))));
+app.post('/api/ai/converse',requireAuth,wrap(async(req,res)=>res.json(await converse(req.body?.text,{language:req.body?.language,history:req.body?.history}))));
 
 // Search
 app.get('/api/search',requireAuth,(req,res)=>res.json({retrieval:'keyword & rule heuristics',results:searchSchemes(req.query.q||'')}));
