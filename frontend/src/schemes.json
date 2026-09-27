@@ -1,22 +1,226 @@
 [
   {
-    "id":"pm-kisan","name":"PM-KISAN (Pradhan Mantri Kisan Samman Nidhi)","category":"Agriculture","benefit":"₹6,000 per year in three installments","officialSource":"https://pmkisan.gov.in/homenew.aspx","summary":"Income support for qualifying landholding farmer families, subject to exclusions and government verification.",
-    "rules":[{"field":"ownsCultivableLand","op":"equals","value":true,"label":"Family owns cultivable land","source":"https://pmkisan.gov.in/homenew.aspx"},{"field":"pmKisanExclusion","op":"equals","value":false,"label":"No PM-KISAN exclusion applies to the family","source":"https://pmkisan.gov.in/homenew.aspx"}],
-    "limitations":["Self-reported land and exclusions cannot establish official eligibility. Government land records, family definition, date of land acquisition, state exceptions and registration must be checked with the official portal."],"documentChecklist":[]
+    "id": "pm-kisan",
+    "name": "PM-KISAN (Pradhan Mantri Kisan Samman Nidhi)",
+    "category": "Agriculture",
+    "benefit": "₹6,000 per year in three installments",
+    "officialSource": "https://pmkisan.gov.in/homenew.aspx",
+    "summary": "Income support for qualifying landholding farmer families, subject to exclusions and government verification.",
+    "rules": [
+      {
+        "field": "ownsCultivableLand",
+        "op": "equals",
+        "value": true,
+        "label": "Family owns cultivable land",
+        "source": "https://pmkisan.gov.in/homenew.aspx"
+      },
+      {
+        "field": "pmKisanExclusion",
+        "op": "equals",
+        "value": false,
+        "label": "No PM-KISAN exclusion applies to the family",
+        "source": "https://pmkisan.gov.in/homenew.aspx"
+      }
+    ],
+    "limitations": [
+      "Self-reported land and exclusions cannot establish official eligibility. Government land records, family definition, date of land acquisition, state exceptions and registration must be checked with the official portal."
+    ],
+    "documentChecklist": []
   },
   {
-    "id":"ignoaps","name":"Indira Gandhi National Old Age Pension Scheme (IGNOAPS)","category":"Senior citizens","benefit":"Central contribution: ₹200 monthly ages 60–79, ₹500 monthly from age 80; state top-ups vary","officialSource":"https://nsap.nic.in/circular.do?method=faq","summary":"NSAP old-age pension for a person aged 60 or over in a BPL household.",
-    "rules":[{"field":"age","op":"min","value":60,"label":"Age at least 60","source":"https://nsap.nic.in/circular.do?method=faq"},{"field":"bpl","op":"equals","value":true,"label":"Household is BPL under the official list/criteria","source":"https://nsap.nic.in/circular.do?method=faq"}],
-    "limitations":["Income amount by itself does not prove BPL status. Government/local authority must verify BPL record and application."],"documentChecklist":[]
+    "id": "ignoaps",
+    "name": "Indira Gandhi National Old Age Pension Scheme (IGNOAPS)",
+    "category": "Senior citizens",
+    "benefit": "Central contribution: ₹200 monthly ages 60–79, ₹500 monthly from age 80; state top-ups vary",
+    "officialSource": "https://nsap.nic.in/circular.do?method=faq",
+    "summary": "NSAP old-age pension for a person aged 60 or over in a BPL household.",
+    "rules": [
+      {
+        "field": "age",
+        "op": "min",
+        "value": 60,
+        "label": "Age at least 60",
+        "source": "https://nsap.nic.in/circular.do?method=faq"
+      },
+      {
+        "field": "bpl",
+        "op": "equals",
+        "value": true,
+        "label": "Household is BPL under the official list/criteria",
+        "source": "https://nsap.nic.in/circular.do?method=faq"
+      }
+    ],
+    "limitations": [
+      "Income amount by itself does not prove BPL status. Government/local authority must verify BPL record and application."
+    ],
+    "documentChecklist": []
   },
   {
-    "id":"ignwps","name":"Indira Gandhi National Widow Pension Scheme (IGNWPS)","category":"Women","benefit":"Central contribution: ₹300 monthly (state additions may vary)","officialSource":"https://nsap.nic.in/","summary":"NSAP pension for BPL widows aged 40–59.",
-    "rules":[{"field":"age","op":"min","value":40,"label":"Age at least 40","source":"https://nsap.nic.in/"},{"field":"age","op":"max","value":59,"label":"Age at most 59","source":"https://nsap.nic.in/"},{"field":"bpl","op":"equals","value":true,"label":"Household is BPL under official criteria","source":"https://nsap.nic.in/"},{"field":"widow","op":"equals","value":true,"label":"Applicant is a widow","source":"https://nsap.nic.in/"}],
-    "limitations":["Government/local authority must verify widow and BPL status; this tool cannot determine official entitlement."],"documentChecklist":[]
+    "id": "ignwps",
+    "name": "Indira Gandhi National Widow Pension Scheme (IGNWPS)",
+    "category": "Women",
+    "benefit": "Central contribution: ₹300 monthly (state additions may vary)",
+    "officialSource": "https://nsap.nic.in/",
+    "summary": "NSAP pension for BPL widows aged 40–59.",
+    "rules": [
+      {
+        "field": "age",
+        "op": "min",
+        "value": 40,
+        "label": "Age at least 40",
+        "source": "https://nsap.nic.in/"
+      },
+      {
+        "field": "age",
+        "op": "max",
+        "value": 59,
+        "label": "Age at most 59",
+        "source": "https://nsap.nic.in/"
+      },
+      {
+        "field": "bpl",
+        "op": "equals",
+        "value": true,
+        "label": "Household is BPL under official criteria",
+        "source": "https://nsap.nic.in/"
+      },
+      {
+        "field": "widow",
+        "op": "equals",
+        "value": true,
+        "label": "Applicant is a widow",
+        "source": "https://nsap.nic.in/"
+      }
+    ],
+    "limitations": [
+      "Government/local authority must verify widow and BPL status; this tool cannot determine official entitlement."
+    ],
+    "documentChecklist": []
   },
   {
-    "id":"igndps","name":"Indira Gandhi National Disability Pension Scheme (IGNDPS)","category":"Disability","benefit":"Central contribution: ₹300 monthly (state additions may vary)","officialSource":"https://nsap.nic.in/","summary":"NSAP pension for BPL people aged 18–59 with severe or multiple disabilities.",
-    "rules":[{"field":"age","op":"min","value":18,"label":"Age at least 18","source":"https://nsap.nic.in/"},{"field":"age","op":"max","value":59,"label":"Age at most 59","source":"https://nsap.nic.in/"},{"field":"bpl","op":"equals","value":true,"label":"Household is BPL under official criteria","source":"https://nsap.nic.in/"},{"field":"severeOrMultipleDisability","op":"equals","value":true,"label":"Severe or multiple disability","source":"https://nsap.nic.in/"}],
-    "limitations":["Government/local authority must verify disability classification and BPL status; this tool cannot determine official entitlement."],"documentChecklist":[]
+    "id": "igndps",
+    "name": "Indira Gandhi National Disability Pension Scheme (IGNDPS)",
+    "category": "Disability",
+    "benefit": "Central contribution: ₹300 monthly (state additions may vary)",
+    "officialSource": "https://nsap.nic.in/",
+    "summary": "NSAP pension for BPL people aged 18–59 with severe or multiple disabilities.",
+    "rules": [
+      {
+        "field": "age",
+        "op": "min",
+        "value": 18,
+        "label": "Age at least 18",
+        "source": "https://nsap.nic.in/"
+      },
+      {
+        "field": "age",
+        "op": "max",
+        "value": 59,
+        "label": "Age at most 59",
+        "source": "https://nsap.nic.in/"
+      },
+      {
+        "field": "bpl",
+        "op": "equals",
+        "value": true,
+        "label": "Household is BPL under official criteria",
+        "source": "https://nsap.nic.in/"
+      },
+      {
+        "field": "severeOrMultipleDisability",
+        "op": "equals",
+        "value": true,
+        "label": "Severe or multiple disability",
+        "source": "https://nsap.nic.in/"
+      }
+    ],
+    "limitations": [
+      "Government/local authority must verify disability classification and BPL status; this tool cannot determine official entitlement."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "pmjjby",
+    "name": "Pradhan Mantri Jeevan Jyoti Bima Yojana (PMJJBY)",
+    "category": "Insurance",
+    "benefit": "₹2 lakh life cover on death from any cause; annual premium applies",
+    "officialSource": "https://financialservices.gov.in/pmjjby",
+    "summary": "Renewable one-year life insurance for participating bank or post-office account holders enrolling at ages 18–50.",
+    "rules": [
+      {
+        "field": "age",
+        "op": "min",
+        "value": 18,
+        "label": "Age at least 18 at enrolment",
+        "source": "https://financialservices.gov.in/pmjjby"
+      },
+      {
+        "field": "age",
+        "op": "max",
+        "value": 50,
+        "label": "Age at most 50 at enrolment",
+        "source": "https://financialservices.gov.in/pmjjby"
+      }
+    ],
+    "limitations": [
+      "This age comparison alone cannot establish eligibility or coverage. A participating bank/post-office account, consent to auto-debit, premium, enrolment period, exclusions and current terms need verification. The official page listed an annual premium of ₹436 when checked in September 2026; verify before joining."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "pmsby",
+    "name": "Pradhan Mantri Suraksha Bima Yojana (PMSBY)",
+    "category": "Insurance",
+    "benefit": "Accident cover up to ₹2 lakh for death or specified permanent disability; annual premium applies",
+    "officialSource": "https://financialservices.gov.in/pmsby",
+    "summary": "Renewable one-year accident insurance for participating bank or post-office account holders aged 18–70.",
+    "rules": [
+      {
+        "field": "age",
+        "op": "min",
+        "value": 18,
+        "label": "Age at least 18",
+        "source": "https://financialservices.gov.in/pmsby"
+      },
+      {
+        "field": "age",
+        "op": "max",
+        "value": 70,
+        "label": "Age at most 70 for enrolment",
+        "source": "https://financialservices.gov.in/pmsby"
+      }
+    ],
+    "limitations": [
+      "Age alone cannot establish enrolment or coverage. A participating bank/post-office account, consent to auto-debit, sufficient balance, accident definition and current terms must be verified. The official page listed a ₹20 annual premium when checked in September 2026; verify before joining."
+    ],
+    "documentChecklist": []
+  },
+  {
+    "id": "apy",
+    "name": "Atal Pension Yojana (APY)",
+    "category": "Pension",
+    "benefit": "Contribution-based guaranteed monthly pension of ₹1,000–₹5,000 from age 60, depending on contribution",
+    "officialSource": "https://jansuraksha.gov.in/Files/APY/ENGLISH/APY.pdf",
+    "summary": "Contributory pension option for citizens enrolling at ages 18–40 with a savings account; income-tax payer exclusion applies to new enrolment.",
+    "rules": [
+      {
+        "field": "age",
+        "op": "min",
+        "value": 18,
+        "label": "Age at least 18 when joining",
+        "source": "https://jansuraksha.gov.in/Files/APY/ENGLISH/APY.pdf"
+      },
+      {
+        "field": "age",
+        "op": "max",
+        "value": 40,
+        "label": "Age at most 40 when joining",
+        "source": "https://jansuraksha.gov.in/Files/APY/ENGLISH/APY.pdf"
+      }
+    ],
+    "limitations": [
+      "Age alone cannot establish eligibility. Savings account, nationality, contribution choice and tax-payer exclusion for joiners since October 2022 must be verified with the official source. This is not a welfare payout without contributions."
+    ],
+    "documentChecklist": []
   }
 ]
