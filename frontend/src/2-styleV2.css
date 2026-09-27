@@ -165,3 +165,6 @@
 :root[data-theme=dark] .page h1 .heading-word,:root[data-theme=dark] .page h2 .heading-word,:root[data-theme=dark] .page h3 .heading-word{color:#898b98!important}
 :root[data-theme=dark] .page h1 .heading-words.revealed .heading-word,:root[data-theme=dark] .page h2 .heading-words.revealed .heading-word,:root[data-theme=dark] .page h3 .heading-words.revealed .heading-word{color:#f1f1f4!important}
 @media(prefers-reduced-motion:reduce){.page h1 .heading-word,.page h2 .heading-word,.page h3 .heading-word,.page h1 .heading-words.revealed .heading-word,.page h2 .heading-words.revealed .heading-word,.page h3 .heading-words.revealed .heading-word{color:inherit!important;transition:none!important}}
+
+/* Readable AI replies; never render model-provided HTML. */
+.answer-text{white-space:normal;overflow-wrap:anywhere}.answer-text p{margin:0 0 .55em}.answer-text p:last-child,.answer-text ul:last-child,.answer-text ol:last-child{margin-bottom:0}.answer-text ul,.answer-text ol{margin:.25em 0 .7em;padding-left:1.35em}.answer-text li{margin:.2em 0}.answer-text h4{font-size:1em;margin:.7em 0 .3em}.answer-text a{color:inherit;text-decoration:underline;text-underline-offset:2px;overflow-wrap:anywhere}.answer-text a:hover{text-decoration-thickness:2px}
