@@ -26,7 +26,7 @@ export function matchScheme(profile, scheme) {
     const result = actual === undefined || actual === null ? 'unknown' : rule.op === 'equals' ? (actual === rule.value ? 'met' : 'not_met') : rule.op === 'min' ? (actual >= rule.value ? 'met' : 'not_met') : (actual <= rule.value ? 'met' : 'not_met');
     return {criterion:rule.label, field:rule.field, expected:rule.op === 'equals' ? rule.value : `${rule.op} ${rule.value}`, supplied:actual ?? null, result, source:rule.source};
   });
-  const status = criteria.some(c=>c.result==='not_met') ? 'not_matched' : criteria.some(c=>c.result==='unknown') ? 'needs_information' : 'potential_match';
+  const status = criteria.some(c=>c.result==='not_met') ? 'not_matched' : criteria.some(c=>c.result==='unknown') || ['pmjjby','pmsby','apy'].includes(scheme.id) ? 'needs_information' : 'potential_match';
   return {id:scheme.id,name:scheme.name,category:scheme.category,benefit:scheme.benefit,summary:scheme.summary,status,criteria,officialSource:scheme.officialSource,limitations:scheme.limitations,documentChecklist:scheme.documentChecklist,actionPlan:[...new Set(criteria.filter(c=>c.result==='unknown').map(c=>`Confirm ${c.criterion.toLowerCase()}`)), 'Check the latest rules and required documents at the official source', 'Apply only through the official government process']};
 }
 export function matchAll(profile) {
