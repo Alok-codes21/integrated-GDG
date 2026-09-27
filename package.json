@@ -1,0 +1,28 @@
+{
+  "name": "integrated-gdg-sahayak-ai",
+  "version": "1.0.0",
+  "description": "Integrated Sahayak AI - Civic Welfare Discovery Platform with Frontend, Backend, and ML Services",
+  "scripts": {
+    "install:all": "npm install --prefix backend && npm install --prefix frontend && npm install --prefix ml-portal",
+    "dev:backend": "npm start --prefix backend",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "dev:ml-portal": "npm run dev --prefix ml-portal",
+    "test": "npm test --prefix backend",
+    "build:frontend": "npm run build --prefix frontend",
+    "build:ml-portal": "npm run build --prefix ml-portal",
+    "build": "npm run build:frontend && npm run build:ml-portal"
+  },
+  "keywords": [
+    "sahayak",
+    "welfare",
+    "schemes",
+    "ml",
+    "ocr",
+    "nlp",
+    "express",
+    "react",
+    "mongodb"
+  ],
+  "author": "GDG Team",
+  "license": "ISC"
+}

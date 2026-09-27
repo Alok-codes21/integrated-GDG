@@ -1,0 +1,22 @@
+[
+  {
+    "id":"pm-kisan","name":"PM-KISAN (Pradhan Mantri Kisan Samman Nidhi)","category":"Agriculture","benefit":"₹6,000 per year in three installments","officialSource":"https://pmkisan.gov.in/homenew.aspx","summary":"Income support for qualifying landholding farmer families, subject to exclusions and government verification.",
+    "rules":[{"field":"ownsCultivableLand","op":"equals","value":true,"label":"Family owns cultivable land","source":"https://pmkisan.gov.in/homenew.aspx"},{"field":"pmKisanExclusion","op":"equals","value":false,"label":"No PM-KISAN exclusion applies to the family","source":"https://pmkisan.gov.in/homenew.aspx"}],
+    "limitations":["Self-reported land and exclusions cannot establish official eligibility. Government land records, family definition, date of land acquisition, state exceptions and registration must be checked with the official portal."],"documentChecklist":[]
+  },
+  {
+    "id":"ignoaps","name":"Indira Gandhi National Old Age Pension Scheme (IGNOAPS)","category":"Senior citizens","benefit":"Central contribution: ₹200 monthly ages 60–79, ₹500 monthly from age 80; state top-ups vary","officialSource":"https://nsap.nic.in/circular.do?method=faq","summary":"NSAP old-age pension for a person aged 60 or over in a BPL household.",
+    "rules":[{"field":"age","op":"min","value":60,"label":"Age at least 60","source":"https://nsap.nic.in/circular.do?method=faq"},{"field":"bpl","op":"equals","value":true,"label":"Household is BPL under the official list/criteria","source":"https://nsap.nic.in/circular.do?method=faq"}],
+    "limitations":["Income amount by itself does not prove BPL status. Government/local authority must verify BPL record and application."],"documentChecklist":[]
+  },
+  {
+    "id":"ignwps","name":"Indira Gandhi National Widow Pension Scheme (IGNWPS)","category":"Women","benefit":"Central contribution: ₹300 monthly (state additions may vary)","officialSource":"https://nsap.nic.in/","summary":"NSAP pension for BPL widows aged 40–59.",
+    "rules":[{"field":"age","op":"min","value":40,"label":"Age at least 40","source":"https://nsap.nic.in/"},{"field":"age","op":"max","value":59,"label":"Age at most 59","source":"https://nsap.nic.in/"},{"field":"bpl","op":"equals","value":true,"label":"Household is BPL under official criteria","source":"https://nsap.nic.in/"},{"field":"widow","op":"equals","value":true,"label":"Applicant is a widow","source":"https://nsap.nic.in/"}],
+    "limitations":["Government/local authority must verify widow and BPL status; this tool cannot determine official entitlement."],"documentChecklist":[]
+  },
+  {
+    "id":"igndps","name":"Indira Gandhi National Disability Pension Scheme (IGNDPS)","category":"Disability","benefit":"Central contribution: ₹300 monthly (state additions may vary)","officialSource":"https://nsap.nic.in/","summary":"NSAP pension for BPL people aged 18–59 with severe or multiple disabilities.",
+    "rules":[{"field":"age","op":"min","value":18,"label":"Age at least 18","source":"https://nsap.nic.in/"},{"field":"age","op":"max","value":59,"label":"Age at most 59","source":"https://nsap.nic.in/"},{"field":"bpl","op":"equals","value":true,"label":"Household is BPL under official criteria","source":"https://nsap.nic.in/"},{"field":"severeOrMultipleDisability","op":"equals","value":true,"label":"Severe or multiple disability","source":"https://nsap.nic.in/"}],
+    "limitations":["Government/local authority must verify disability classification and BPL status; this tool cannot determine official entitlement."],"documentChecklist":[]
+  }
+]

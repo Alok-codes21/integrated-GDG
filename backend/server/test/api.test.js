@@ -1,0 +1,21 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';
+process.env.JWT_SECRET='test-only-secret-value-at-least-thirty-two-chars';process.env.DEMO_MODE='true';
+const {app}=await import('../app.js');
+test('authenticated demo API and user isolation',async()=>{const server=app.listen(0),base=`http://127.0.0.1:${server.address().port}`;try{
+ const call=async(path,method='GET',body,token)=>{const r=await fetch(base+path,{method,headers:{'content-type':'application/json',...(token?{authorization:`Bearer ${token}`}:{})},body:body===undefined?undefined:JSON.stringify(body)});return [r.status,await r.json()];};
+ let [status,health]=await call('/api/health');assert.equal(status,200);assert.equal(health.storage,'memory-demo');
+ let [denied]=await call('/api/match','POST',{age:65});assert.equal(denied,401);
+ let [registered,a]=await call('/api/auth/register','POST',{email:'a@example.org',password:'example-passphrase-a'});assert.equal(registered,201);const token=a.token;
+ let [,b]=await call('/api/auth/register','POST',{email:'b@example.org',password:'example-passphrase-b'});
+ let [loginStatus,login]=await call('/api/auth/login','POST',{email:'a@example.org',password:'example-passphrase-a'});assert.equal(loginStatus,200);assert.ok(login.token);
+ let [,schemes]=await call('/api/schemes');assert.equal(schemes.schemes.length,4);
+ let [,extract]=await call('/api/ai/extract','POST',{text:'I am a 65-year-old farmer from Maharashtra'},token);assert.equal(extract.profile.age,65);assert.equal(extract.profile.bpl,undefined);
+ let [,matched]=await call('/api/match','POST',{age:65,occupation:'farmer',annualFamilyIncome:180000},token);assert.equal(matched.results.find(x=>x.id==='ignoaps').status,'needs_information');assert.equal(matched.results.find(x=>x.id==='ignwps').status,'not_matched');
+ let [,created]=await call('/api/profiles','POST',{age:59,bpl:true},token);assert.ok(created.id);
+ let [forbidden]=await call('/api/profiles/'+created.id,'GET',undefined,b.token);assert.equal(forbidden,404);
+ let [,updated]=await call('/api/profiles/'+created.id,'PATCH',{age:60},token);assert.equal(updated.matches.results.find(x=>x.id==='ignoaps').status,'potential_match');
+ let [,found]=await call('/api/profiles/'+created.id,'GET',undefined,token);assert.equal(found.profile.age,60);
+ let [,docs]=await call('/api/documents/check','POST',{schemeId:'ignoaps',profile:{documents:[]}},token);assert.equal(docs.status,'requirements_not_curated');
+ let [scan]=await call('/api/documents/scan','POST',{},token);assert.equal(scan,501);
+ let [bad]=await call('/api/match','POST',{age:'65'},token);assert.equal(bad,400);
+ }finally{server.close();}});
