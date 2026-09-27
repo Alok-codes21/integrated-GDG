@@ -114,7 +114,7 @@ test('full stack integration: auth, schemes, ai extract, ocr scan, documents, ap
     assert.deepEqual(lifeEvents,[]);
     const [recheckStatus, recheckData] = await call('/api/life-events/recheck','POST',{profile:{age:65}},citizenToken);
     assert.equal(recheckStatus,200);
-    assert.equal(recheckData.results.length,4);
+    assert.equal(recheckData.results.length,7);
 
     // 10. Citizen Profile Get and Update
     const [profileGetStatus, profileData] = await call('/api/profile', 'GET', undefined, citizenToken);
