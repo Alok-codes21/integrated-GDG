@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './1-AppV3.jsx';
+import App from './12-catalogV2.jsx';
 import './style.css';
 
 class AppErrorBoundary extends React.Component {
