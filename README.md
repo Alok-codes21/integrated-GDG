@@ -1,5 +1,11 @@
 # Integrated Sahayak AI (GDG Project)
 
+## Live demo
+
+[Open Sahayak AI](https://sahayak-j6ik.onrender.com/)
+
+This is an independent scheme guide. It offers preliminary comparisons, not official eligibility decisions or application status.
+
 > **Citizen Welfare Discovery & Entitlement Matching Platform**  
 > Integrated solution combining **Frontend UI**, **Express + MongoDB Backend**, and **Machine Learning Intelligence Engines** (NLP Profile Extraction, Document OCR Scanner, Voice Assistant, and Rule-based Eligibility Matching).
 
