@@ -9,6 +9,7 @@ import {User} from './models/User.js';
 import {hashPassword,checkPassword,tokenFor,requireAuth} from './services/authService.js';
 import {allSchemes,matchAll,sanitizeProfile} from './services/matchingService.js';
 import {extractProfile} from './services/aiService.js';
+import {converse} from './services/geminiService.js';
 import {searchSchemes} from './services/ragService.js';
 import {ocrUnavailable,scanDocument} from './services/ocrService.js';
 
@@ -136,7 +137,7 @@ app.get('/api/health',(req,res)=>res.json({
   ok:true,
   storage:store()?'mongodb':demoAllowed()?'memory-demo':'unavailable',
   ocr:'text-pattern-only-no-file-ocr',
-  ai:'hybrid-nlp-extraction',
+  ai:process.env.GEMINI_API_KEY?'gemini-with-pattern-fallback':'pattern-extraction-only',
   schemesAvailable: allSchemes.length
 }));
 
@@ -165,6 +166,7 @@ app.post('/api/match',requireAuth,(req,res)=>res.json(matchAll(sanitizeProfile(r
 
 // AI Extract
 app.post('/api/ai/extract',requireAuth,(req,res)=>res.json(extractProfile(req.body?.text)));
+app.post('/api/ai/converse',requireAuth,wrap(async(req,res)=>res.json(await converse(req.body?.text,{language:req.body?.language}))));
 
 // Search
 app.get('/api/search',requireAuth,(req,res)=>res.json({retrieval:'keyword & rule heuristics',results:searchSchemes(req.query.q||'')}));
