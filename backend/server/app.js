@@ -10,6 +10,7 @@ import {hashPassword,checkPassword,tokenFor,requireAuth} from './services/authSe
 import {allSchemes,matchAll,sanitizeProfile} from './services/matchingService.js';
 import {extractProfile} from './services/aiService.js';
 import {converse} from './services/geminiService.js';
+import {answerSchemeQuestion} from './services/assistantService.js';
 import {searchSchemes} from './services/ragService.js';
 import {ocrUnavailable,scanDocument} from './services/ocrService.js';
 
@@ -167,6 +168,7 @@ app.post('/api/match',requireAuth,(req,res)=>res.json(matchAll(sanitizeProfile(r
 // AI Extract
 app.post('/api/ai/extract',requireAuth,(req,res)=>res.json(extractProfile(req.body?.text)));
 app.post('/api/ai/converse',requireAuth,wrap(async(req,res)=>res.json(await converse(req.body?.text,{language:req.body?.language,history:req.body?.history}))));
+app.post('/api/ai/ask',requireAuth,wrap(async(req,res)=>res.json(await answerSchemeQuestion(req.body?.text,{language:req.body?.language,history:req.body?.history}))));
 
 // Search
 app.get('/api/search',requireAuth,(req,res)=>res.json({retrieval:'keyword & rule heuristics',results:searchSchemes(req.query.q||'')}));
@@ -327,7 +329,7 @@ app.post('/api/life-events',requireAuth,(req,res)=>{
 
 app.post('/api/life-events/recheck',requireAuth,(req,res)=>{
  const profile=sanitizeProfile(req.body?.profile||{});
- res.json({...matchAll(profile),note:'Preliminary recheck of the four curated schemes only. No official life-event notification or application was verified.'});
+ res.json({...matchAll(profile),note:'Preliminary recheck of the seven curated schemes only. No official life-event notification or application was verified.'});
 });
 
 // Error handling
