@@ -24,21 +24,23 @@ export async function extractProfile({ text, language = 'en', token = '' }) {
     const headers = { 'Content-Type': 'application/json' };
     if (token) headers['Authorization'] = `Bearer ${token}`;
 
-    const res = await fetch(`${API}/api/ai/extract`, {
+    const res = await fetch(`${API}/api/ai/converse`, {
       method: 'POST',
       headers,
-      body: JSON.stringify({ text: text.trim() })
+      body: JSON.stringify({ text: text.trim(), language })
     });
 
     if (res.ok) {
       const data = await res.json();
       return {
         proposedProfile: data.profile || {},
+        reply: data.reply || '',
+        model: data.model || null,
         confidence: data.confidence ?? null,
         evidence: data.extractedEntities || [],
         missingFields: data.missingFields || [],
         note: data.note || 'Review extracted fields before matching.',
-        mode: data.mode || 'ai-nlp-extraction'
+        mode: data.mode || 'pattern-fallback'
       };
     }
   } catch (err) {
@@ -93,7 +95,9 @@ export async function extractProfile({ text, language = 'en', token = '' }) {
     evidence,
     missingFields: ['age', 'state', 'bpl', 'ownsCultivableLand'].filter(k => proposed[k] === undefined),
     note: 'Pattern-based suggestions from your text. Review every value before continuing.',
-    mode: 'client-nlp-fallback'
+    reply: 'The model is unavailable right now. I can suggest details from your text; please review them.',
+    model: null,
+    mode: 'pattern-fallback'
   };
 }
 
