@@ -43,20 +43,10 @@ const demoAllowed=()=>process.env.DEMO_MODE==='true' || process.env.NODE_ENV!=='
 const store=()=>mongoose.connection.readyState===1;
 const wrap=fn=>(req,res,next)=>Promise.resolve(fn(req,res,next)).catch(next);
 
-const defaultDocuments = [
-  { id: 'doc-income', name: 'Income Certificate (Tahsildar Issued)', category: 'Income Proof', status: 'verified', badgeText: '✓ Verified via ML OCR Engine (Valid till 2029)', lastVerified: 'Verified Today', previewAvailable: true, extractedData: { citizenName: 'Rahul Kumar', annualIncome: '180000', certNumber: 'IC/2026/04981', authority: 'Office of the Tahsildar, Sinnar, Nashik' } },
-  { id: 'doc-land', name: '7/12 Land Record Extract (Record of Rights)', category: 'Landholding', status: 'verified', badgeText: '✓ Verified via Mahabhulekh Digital Sync', lastVerified: 'Verified 14 Aug 2026', previewAvailable: true },
-  { id: 'doc-aadhaar', name: 'Aadhaar Identification Card', category: 'Identity', status: 'verified', badgeText: '✓ Biometrics & NPCI DBT Linked', lastVerified: 'Active', previewAvailable: true },
-  { id: 'doc-ration', name: 'Ration Card (Orange Tier - Priority Household)', category: 'Household Status', status: 'pending_verification', badgeText: '● Uploaded (Pending OCR Verification)', lastVerified: 'Uploaded Just Now', previewAvailable: true }
-];
-
-const defaultApplications = [
-  { id: 'app-001', schemeName: 'PM-KISAN Samman Nidhi', department: 'Ministry of Agriculture & Farmers Welfare', referenceNumber: 'MH-PMK-2026-88192', office: 'Nashik District Collectorate (Agri Cell)', initiatedDate: '14 Oct 2026', sanctionBenefit: '₹6,000 / year (Direct DBT)', benefitUnit: 'Installment 17 Ready', currentStatus: 'Sanction Order Generated', statusType: 'approved', steps: [{ number: 1, title: 'Application Submitted', date: '14 Oct 2026', status: 'completed' }, { number: 2, title: 'Land Record Verified', date: '15 Oct 2026', status: 'completed' }, { number: 3, title: 'Sanction Order Generated', date: 'Today', status: 'completed' }] }
-];
-
-const defaultLifeEvents = [
-  { id: 'm-001', tag: 'DROUGHT DECLARATION', date: '04 Oct 2026', title: 'Severe Rainfed Drought Notification', description: 'Govt declared Sinnar taluka drought-affected. Emergency relief activated.', resultTitle: '✓ Re-evaluation Complete', resultSummary: 'Unlocked ₹13,600 / Ha Crop Loss Subsidy and Interest Waiver.', verificationBadge: '◉ Verified Notification' }
-];
+// No sample citizen documents or submitted applications are presented as real data.
+const defaultDocuments = [];
+const defaultApplications = [];
+const defaultLifeEvents = [];
 
 const authLimit=rateLimit({windowMs:15*60*1000,limit:60,standardHeaders:'draft-8',legacyHeaders:false});
 
@@ -145,7 +135,7 @@ app.post('/api/auth/forgot-password',(req,res)=>{
 app.get('/api/health',(req,res)=>res.json({
   ok:true,
   storage:store()?'mongodb':demoAllowed()?'memory-demo':'unavailable',
-  ocr:'enabled-ml-parser',
+  ocr:'text-pattern-only-no-file-ocr',
   ai:'hybrid-nlp-extraction',
   schemesAvailable: allSchemes.length
 }));
@@ -273,94 +263,38 @@ app.post('/api/documents/check',requireAuth,(req,res)=>{
 
 // Documents Scan / OCR
 app.post('/api/documents/scan',requireAuth,(req,res)=>{
-  const hasPayload = req.body && Object.keys(req.body).length > 0 && (req.body.file || req.body.fileName || req.body.textContent || req.body.scan || req.body.image);
-  if (!hasPayload) {
-    // Return 501 when empty for exact backwards-compatibility with test suite
-    return res.status(501).json(ocrUnavailable());
-  }
+  if(typeof req.body?.textContent!=='string'||!req.body.textContent.trim())return res.status(501).json(ocrUnavailable());
   return res.json(scanDocument(req.body));
 });
 
-// Document Vault
-app.get('/api/documents',requireAuth,(req,res)=>{
-  const docs = userDocuments.get(req.userId) || defaultDocuments;
-  res.json(docs);
-});
+// User-owned bookmarks. MongoDB persists accounts; demo-mode accounts remain temporary.
+app.get('/api/saved-schemes',requireAuth,wrap(async(req,res)=>{
+  const user=store()?await User.findById(req.userId).lean():demoUsers.get(req.userId);
+  if(!user)return res.status(404).json({error:'Account not found'});
+  res.json({ids:user.savedSchemeIds||[],storage:store()?'mongodb':'memory-demo'});
+}));
+app.put('/api/saved-schemes',requireAuth,wrap(async(req,res)=>{
+  const ids=req.body?.ids;
+  if(!Array.isArray(ids)||ids.length>allSchemes.length||ids.some(id=>typeof id!=='string'||!allSchemes.some(s=>s.id===id)))return res.status(400).json({error:'Select valid scheme IDs'});
+  const savedSchemeIds=[...new Set(ids)];
+  if(store()){
+    const user=await User.findByIdAndUpdate(req.userId,{savedSchemeIds},{new:true}).lean();
+    if(!user)return res.status(404).json({error:'Account not found'});
+  }else{
+    const user=demoUsers.get(req.userId);
+    if(!user)return res.status(404).json({error:'Account not found'});
+    user.savedSchemeIds=savedSchemeIds;
+  }
+  res.json({ids:savedSchemeIds,storage:store()?'mongodb':'memory-demo'});
+}));
 
-app.post('/api/documents/upload',requireAuth,(req,res)=>{
-  const docs = userDocuments.get(req.userId) || [...defaultDocuments];
-  const info = req.body || {};
-  const updated = docs.map(d => {
-    if (d.id === info.id || d.name?.toLowerCase().includes((info.type||'').toLowerCase())) {
-      return {
-        ...d,
-        status: 'pending_verification',
-        badgeText: '● Uploaded (Pending OCR Verification)',
-        lastVerified: 'Uploaded Just Now',
-        previewAvailable: true
-      };
-    }
-    return d;
-  });
-  userDocuments.set(req.userId, updated);
-  res.json({success:true, documents: updated});
-});
-
-app.post('/api/documents/:id/verify',requireAuth,(req,res)=>{
-  const docs = userDocuments.get(req.userId) || [...defaultDocuments];
-  const {extractedData} = req.body || {};
-  const updated = docs.map(d => {
-    if (d.id === req.params.id || d.id === 'doc-income') {
-      return {
-        ...d,
-        status: 'verified',
-        badgeText: '✓ ML OCR Verification Complete (Valid till 2029)',
-        lastVerified: 'Verified Today',
-        extractedData: extractedData || d.extractedData
-      };
-    }
-    return d;
-  });
-  userDocuments.set(req.userId, updated);
-  res.json({success:true, message:'OCR Verification complete', documents: updated});
-});
-
-// Applications Tracking
-app.get('/api/applications',requireAuth,(req,res)=>{
-  const apps = userApplications.get(req.userId) || defaultApplications;
-  res.json(apps);
-});
-
-app.get('/api/applications/:id',requireAuth,(req,res)=>{
-  const apps = userApplications.get(req.userId) || defaultApplications;
-  const appItem = apps.find(a => a.id === req.params.id) || apps[0];
-  res.json(appItem);
-});
-
-app.post('/api/applications',requireAuth,(req,res)=>{
-  const apps = userApplications.get(req.userId) || [...defaultApplications];
-  const data = req.body || {};
-  const newApp = {
-    id: `app-${Date.now()}`,
-    schemeName: data.schemeName || "Government Welfare Entitlement",
-    department: data.department || "Government Department",
-    referenceNumber: `MH-REG-${Math.floor(10000 + Math.random() * 90000)}`,
-    office: "Nashik District Collectorate",
-    initiatedDate: "Today",
-    sanctionBenefit: data.benefit || "Fiscal Assistance",
-    benefitUnit: "",
-    currentStatus: "Draft Application Initiated",
-    statusType: "draft",
-    steps: [
-      { number: 1, title: "Step 1: Profile Reviewed", date: "Today", status: "completed", description: "Demographic criteria pre-filled." },
-      { number: 2, title: "Step 2: Documents Vault Attached", date: "Today", status: "completed", description: "Verified documents synced." },
-      { number: 3, title: "Step 3: Portal Submission", date: "In Progress", status: "current", description: "Ready to push to official portal." }
-    ]
-  };
-  const updated = [newApp, ...apps];
-  userApplications.set(req.userId, updated);
-  res.status(201).json({success:true, application: newApp});
-});
+// Document and application features are intentionally limited to honest preparation.
+app.get('/api/documents',requireAuth,(req,res)=>res.json([]));
+app.post('/api/documents/upload',requireAuth,(req,res)=>res.status(501).json({error:'Document upload and verification are not available. Do not submit identity documents here.'}));
+app.post('/api/documents/:id/verify',requireAuth,(req,res)=>res.status(501).json({error:'Official document verification is not available.'}));
+app.get('/api/applications',requireAuth,(req,res)=>res.json([]));
+app.get('/api/applications/:id',requireAuth,(req,res)=>res.status(404).json({error:'No application found. Sahayak does not submit applications.'}));
+app.post('/api/applications',requireAuth,(req,res)=>res.status(501).json({error:'Applications cannot be submitted here. Use the official scheme site.'}));
 
 // Life Events Hub
 app.get('/api/life-events',requireAuth,(req,res)=>{
@@ -390,35 +324,8 @@ app.post('/api/life-events',requireAuth,(req,res)=>{
 });
 
 app.post('/api/life-events/recheck',requireAuth,(req,res)=>{
-  res.json({
-    success: true,
-    evaluatedAt: new Date().toISOString(),
-    unlockedSchemesCount: 3,
-    newSchemes: [
-      {
-        id: "sanjay-gandhi-niradhar",
-        name: "Sanjay Gandhi Niradhar Anudan Yojana",
-        benefit: "₹1,500 / month",
-        why: "Income adjusted under statutory limit (< ₹1,40,000/year)"
-      },
-      {
-        id: "antyodaya-anna-yojana",
-        name: "Antyodaya Anna Yojana (AAY) & Priority Household",
-        benefit: "35 kg / month foodgrain",
-        why: "Priority rural cultivator criteria met"
-      },
-      {
-        id: "drought-crop-loss",
-        name: "Maharashtra Drought & Crop Loss Relief Subsidy",
-        benefit: "Up to ₹13,600 / Ha",
-        why: "Nashik rainfed agricultural deficit declared"
-      }
-    ],
-    unaffectedApplications: [
-      { name: "PM-KISAN Samman Nidhi", status: "Active" },
-      { name: "Shravanbal Seva State Pension", status: "Application in progress" }
-    ]
-  });
+ const profile=sanitizeProfile(req.body?.profile||{});
+ res.json({...matchAll(profile),note:'Preliminary recheck of the four curated schemes only. No official life-event notification or application was verified.'});
 });
 
 // Error handling
