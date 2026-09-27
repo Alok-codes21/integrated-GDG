@@ -629,13 +629,13 @@ function Dashboard() {
 
                         <div className="rail-card">
                             <span className="rail-small-label" style={{ color: "#3b82f6", fontWeight: "600" }}>
-                                ✦ AI RECOMMENDATION ENGINE
+                                ✦ SCHEME EXPLORER
                             </span>
                             <h3>
-                                Predictive Welfare Match
+                                Explore scheme examples
                             </h3>
                             <p>
-                                Based on pattern analysis of 12,000+ profiles in Nashik District, our ML model predicts you have a <strong>92% approval probability</strong> for the &quot;Shetkari Sanman Yojana&quot; (Tractor/Equipment Subsidy).
+                                Compare your self-reported answers with the limited scheme examples. This is not an official approval prediction.
                             </p>
                             <div style={{
                                 marginTop: "12px",
@@ -645,10 +645,10 @@ function Dashboard() {
                                 borderLeft: "3px solid #3b82f6",
                                 fontSize: "13px"
                             }}>
-                                <strong>Model Insights:</strong><br />
-                                • Landholding size match (2.5 acres)<br />
-                                • High adoption rate in your village<br />
-                                • Seasonal timing factor (Pre-monsoon)
+                                <strong>Before you apply:</strong><br />
+                                • Check the current official scheme rules<br />
+                                • Confirm any missing answers yourself<br />
+                                • Use the responsible government portal
                             </div>
                             <button
                                 type="button"
@@ -656,7 +656,7 @@ function Dashboard() {
                                 onClick={() => navigate("/schemes")}
                                 style={{ marginTop: "16px", borderColor: "#3b82f6", color: "#2563eb" }}
                             >
-                                Explore AI Predicted Schemes ↗
+                                Browse scheme examples ↗
                             </button>
                         </div>
 
