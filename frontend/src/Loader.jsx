@@ -1,0 +1,3 @@
+import React from 'react';
+import './Loader.css';
+export default function Loader({compact=false,label='Finding scheme examples…'}){return <div className={'sahayak-loader '+(compact?'compact':'')} role="status" aria-live="polite"><div className="loader-cast" aria-hidden="true">{['farmer','elder','woman','worker'].map(type=><span className={'loader-person '+type} key={type}><i className="hair"/><i className="head"/><i className="arms"/><i className="body"/><i className="legs"/></span>)}</div><div className="loader-title">Sahayak AI</div><div className="loader-sub">{label}</div><div className="loader-ground" aria-hidden="true"><span/></div></div>}
