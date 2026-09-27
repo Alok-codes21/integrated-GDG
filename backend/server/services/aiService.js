@@ -43,7 +43,7 @@ export function extractProfile(text) {
  if(/\b(no\s+land|landless|without\s+land|no\s+cultivable\s+land)\b/.test(t)) {
    profile.ownsCultivableLand=false;
    entities.push({field:'ownsCultivableLand',value:false,confidence:0.95});
- } else if(/\b(own\s+land|owns\s+land|family\s+owns\s+land)\b/.test(t)) {
+ } else if(/\b(own\s+(?:cultivable|agricultural)\s+land|owns\s+(?:cultivable|agricultural)\s+land|family\s+owns\s+(?:cultivable|agricultural)\s+land)\b/.test(t) && !/\b(?:do not|don't|does not|doesn't|not|no)\s+(?:own|owns)\b/.test(t)) {
    profile.ownsCultivableLand=true;
    entities.push({field:'ownsCultivableLand',value:true,confidence:0.92});
  }
@@ -53,11 +53,11 @@ export function extractProfile(text) {
    profile.widow=true;
    entities.push({field:'widow',value:true,confidence:0.96});
  }
- if(/\b(bpl|below poverty line|bpl card)\b/.test(t)) {
+ if(/\b(bpl|below poverty line|bpl card)\b/.test(t) && !/\b(?:not|no|without|don't have|do not have|never had|not on)\s+(?:(?:a|the|an|official)\s+)?(?:bpl|below poverty line)/.test(t)) {
    profile.bpl=true;
    entities.push({field:'bpl',value:true,confidence:0.91});
  }
- if(/\b(disability|disabled|divyang|दिव्यांग|handicap)\b/.test(t)) {
+ if(/\b(?:severe disability|severely disabled|multiple disabilities|गंभीर विकलांगता|गंभीर दिव्यांगता)\b/.test(t) && !/\b(?:no|not|without)\s+(?:severe|multiple)\s+disabilit/.test(t)) {
    profile.severeOrMultipleDisability=true;
    entities.push({field:'severeOrMultipleDisability',value:true,confidence:0.93});
  }
