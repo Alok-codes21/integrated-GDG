@@ -68,6 +68,7 @@ function App(){
 
  async function runMlExtract() {
   if (!mlStory.trim()) return;
+  if (!token) { setNotice(t.storyLogin); setAuthOpen(true); setPage('auth'); return; }
   setMlLoading(true);
   setError('');
   try {
