@@ -10,6 +10,8 @@ test('authenticated demo API and user isolation',async()=>{const server=app.list
  let [loginStatus,login]=await call('/api/auth/login','POST',{email:'a@example.org',password:'example-passphrase-a'});assert.equal(loginStatus,200);assert.ok(login.token);
  let [,schemes]=await call('/api/schemes');assert.equal(schemes.schemes.length,4);
  let [,extract]=await call('/api/ai/extract','POST',{text:'I am a 65-year-old farmer from Maharashtra'},token);assert.equal(extract.profile.age,65);assert.equal(extract.profile.bpl,undefined);
+ let [noConversation]=await call('/api/ai/converse','POST',{text:'I am 65'});assert.equal(noConversation,401);
+ let [convStatus,conversation]=await call('/api/ai/converse','POST',{text:'I am 65 and live in Maharashtra. I have a disability, am not BPL, and do not own cultivable land.',language:'en'},token);assert.equal(convStatus,200);assert.equal(conversation.mode,'pattern-fallback');assert.equal(conversation.profile.age,65);assert.equal(conversation.profile.bpl,undefined);assert.equal(conversation.profile.severeOrMultipleDisability,undefined);assert.equal(conversation.profile.ownsCultivableLand,undefined);assert.ok(conversation.reply);
  let [,matched]=await call('/api/match','POST',{age:65,occupation:'farmer',annualFamilyIncome:180000},token);assert.equal(matched.results.find(x=>x.id==='ignoaps').status,'needs_information');assert.equal(matched.results.find(x=>x.id==='ignwps').status,'not_matched');
  let [,created]=await call('/api/profiles','POST',{age:59,bpl:true},token);assert.ok(created.id);
  let [forbidden]=await call('/api/profiles/'+created.id,'GET',undefined,b.token);assert.equal(forbidden,404);
